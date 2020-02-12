@@ -148,11 +148,14 @@ namespace Reddit.Models
         /// <param name="subreddit">The subreddit with the listing</param>
         /// <param name="loadReplies">The Info endpoint doesn't include replies; if loadReplies is true, an additional API call will be triggered to retrieve the replies (default: true)</param>
         /// <returns>The requested listings.</returns>
-        public Info Info(string id, string subreddit = null, bool loadReplies = true)
+        public Info Info(string id = null, string subreddit = null, bool loadReplies = true, string url = null)
         {
             RestRequest restRequest = PrepareRequest(Sr(subreddit) + "api/info");
 
-            restRequest.AddParameter("id", id);
+            if (id != null)
+                restRequest.AddParameter("id", id);
+            if (url != null)
+                restRequest.AddParameter("url", url);
             
             DynamicListingContainer res = JsonConvert.DeserializeObject<DynamicListingContainer>(ExecuteRequest(restRequest));
 
